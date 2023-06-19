@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import axios from 'axios';
+import PhotoCard from './PhotoCard';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+async function callDogApi() {
+  return await axios.get("https://dog.ceo/api/breeds/image/random")
 }
+
+class App extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = {
+      image: ""
+    }
+  }
+  componentDidMount(){
+    callDogApi().then(result => this.setState({
+      image: result.data.message
+    }))
+  }
+  render(){
+    return <PhotoCard image={this.state.image} />
+  }
+  }
 
 export default App;
